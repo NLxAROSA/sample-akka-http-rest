@@ -9,7 +9,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
   "A relevant vcap_services" should "be retrievable by name" in {
     Given("A sample VCAP_SERVICES json")
     val sampleVcap = """{
-                       |  "p-mysql": [
+                       |  "p.mysql": [
                        |   {
                        |    "credentials": {
                        |     "hostname": "mysql.local.pcfdev.io",
@@ -20,7 +20,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
                        |     "uri": "mysql://aUser:aPass@mysql.local.pcfdev.io:3306/mydb?reconnect=true",
                        |     "username": "aUser"
                        |    },
-                       |    "label": "p-mysql",
+                       |    "label": "p.mysql",
                        |    "name": "mydb",
                        |    "plan": "512mb",
                        |    "provider": null,
@@ -38,7 +38,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
     val vcapHelper = new CloudFoundryHelper(Map("VCAP_SERVICES" -> sampleVcap))
 
     Then("A configuration should be retrievable by the name element")
-    val mydbConfig:Config = vcapHelper.getConfigFor("p-mysql", "mydb")
+    val mydbConfig:Config = vcapHelper.getConfigFor("\"p.mysql\"", "mydb")
 
     assert(mydbConfig.getString("hostname") === "mysql.local.pcfdev.io")
     assert(mydbConfig.getInt("port") === 3306)
@@ -48,7 +48,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
   "Vcap_services with missing name" should "should return an empty " in {
     Given("A sample VCAP_SERVICES json")
     val sampleVcap = """{
-                       |  "p-mysql": [
+                       |  "p.mysql": [
                        |   {
                        |    "credentials": {
                        |     "hostname": "mysql.local.pcfdev.io",
@@ -59,7 +59,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
                        |     "uri": "mysql://aUser:aPass@mysql.local.pcfdev.io:3306/mydb?reconnect=true",
                        |     "username": "aUser"
                        |    },
-                       |    "label": "p-mysql",
+                       |    "label": "p.mysql",
                        |    "name": "diffname",
                        |    "plan": "512mb",
                        |    "provider": null,
@@ -76,7 +76,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
     val vcapHelper = new CloudFoundryHelper(Map("VCAP_SERVICES" -> sampleVcap))
 
     When("And a configuration retrieved by name")
-    val mydbConfig:Config = vcapHelper.getConfigFor("p-mysql", "mydb")
+    val mydbConfig:Config = vcapHelper.getConfigFor("\"p.mysql\"", "mydb")
 
     Then("The expected paths should be missing")
     assert(mydbConfig.hasPath("hostname") === false)
@@ -87,7 +87,7 @@ class CloudFoundryHelperTest extends FlatSpec with BeforeAndAfter with GivenWhen
   "Mangled VCAP_SERVICES" should "should return an empty Config" in {
     Given("A sample VCAP_SERVICES json")
     val sampleVcap = """{
-                       |  "p-mysql": [
+                       |  "p.mysql": [
                        |   
                        |    "credentials": {
                        | }

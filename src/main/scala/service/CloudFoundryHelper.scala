@@ -7,7 +7,7 @@ import scala.collection.JavaConverters._
 class CloudFoundryHelper(env: Map[String, String]) {
 
   /**
-    * Get the configuration for a service type(p-mysql, p-rabbitmq etc) and a service name
+    * Get the configuration for a service type(p.mysql, p-rabbitmq etc) and a service name
     *
     * @param serviceType
     * @param name

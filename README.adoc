@@ -123,7 +123,7 @@ curl -X "DELETE" "http://localhost:8080/hotels/1" \
 
 [source, java]
 ----
-cf create-service p-mysql 512mb sampledb
+cf create-service p.mysql 512mb sampledb
 cf push
 ----
 
